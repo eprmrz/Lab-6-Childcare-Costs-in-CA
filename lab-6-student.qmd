@@ -1,3 +1,14 @@
+---
+title: "lab-6-student"
+author: "Efrain Ramirez"
+format: html
+editor: source
+embed-resources: true
+code-tools: true
+execute: 
+  eval: false
+  echo: true
+---
 ## The Data
 
 In this lab we're going look at the median weekly cost of childcare in
@@ -9,7 +20,8 @@ The data come to us from [TidyTuesday](https://github.com/rfordatascience/tidytu
 
 ```{r}
 #| label: setup
-
+library(tidyverse)
+library(janitor)
 ```
 
 ```{r}
@@ -21,6 +33,8 @@ counties <- read_csv('https://raw.githubusercontent.com/rfordatascience/tidytues
 ```
 
 **1. Briefly describe the dataset (~ 4 sentences). What information does it contain?**
+
+> The dataset: 'childcare_costs' contain a total of 34567 in rows, and a total of 61 columns. From those 61 columns, the variable types are <dbl> for all them, but describes important demographics for the sample population. For the dataset: 'counties', it contains a total of 3144 rows and 4 columns. From this dataset, 3 of the variable types in the columns are <chr> and 1 is <dbl> due to the variable country_fips_code being a numeric variable. 
 
 ## California Childcare Costs
 
