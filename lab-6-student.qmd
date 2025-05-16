@@ -22,6 +22,9 @@ The data come to us from [TidyTuesday](https://github.com/rfordatascience/tidytu
 #| label: setup
 library(tidyverse)
 library(janitor)
+library(forcats)
+library(dplyr)
+library(stringr)
 ```
 
 ```{r}
@@ -46,7 +49,12 @@ Let's start by focusing only on California.
 
 ```{r}
 #| label: ca-childcare-costs
-
+ca_childcare <- counties %>% 
+  full_join(childcare_costs) %>% 
+  select(county_fips_code, county_name, state_name, state_abbreviation, study_year, mhi_2018, mcsa, mc_infant, mc_toddler, mc_preschool) %>% 
+  filter(state_name == "California")
+  
+print(ca_childcare)
 ```
 
 **3. Using a function from the `forcats` package, complete the code below to create a new variable where each county is categorized into one of the [10 Census regions](https://census.ca.gov/regions/) in California. Use the Region description (from the plot), not the Region number. An example region has been started for you.**  
@@ -56,12 +64,22 @@ Let's start by focusing only on California.
 ```{r}
 #| label: recoding-county-to-census-regions
 
-ca_childcare <- ca_childcare |> 
-  mutate(county_name = str_remove(county_name, " County")) |> 
-  mutate(region = fct_______(county_name,
-    'Superior California' = c("Butte", "Colusa", "El Dorado". ...),
-     ...
-    ))
+ca_childcare <- ca_childcare %>%
+  mutate(county_name = str_remove(county_name, "County")) %>% 
+  mutate(region = fct_collapse(county_name,
+    'Northern California' = "Del Norte", "Humboldt", "Lake", "Mendocino", "Siskiyou", "Trinity",
+    'Superior California' = "Butte", "Colusa", "Glenn", "Lassen", "Modoc", "Plumas", "Shasta", "Sutter", "Tehama", "Yuba",
+    'San Francisco Bay Area' = "Alameda", "Contra Costa", "Marin", "Napa", "San Francisco", "San Mateo", "Santa Clara", "Solano", "Sonoma",
+    'Central Coast' = "Monterey", "San Benito", "San Luis Obispo", "Santa Barbara", "Santa Cruz", "Ventura",
+    'San Joaquin Valley' = "Fresno", "Kern", "Kings", "Madera", "Merced", "San Joaquin", "Stanislaus", "Tulare",
+    'Inland Empire' = "Riverside", "San Bernardino",
+    'Los Angeles' = "Los Angeles",
+    'Orange County' = "Orange",
+    'San Diego' = "San Diego",
+    'Sacramento Area' = "Placer", "Sacramento", "Yolo", "El Dorado"
+  ))
+
+print(ca_childcare)
 ```
 
 
