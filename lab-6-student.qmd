@@ -89,14 +89,14 @@ print(ca_childcare)
 ```{r}
 #| label: median-income-by-region-over-time
 # Hint: You will want to calculate the median of median income before you make columns for 2008/2018 by transforming the data
-median_income_region <- ca_childcare %>% 
+med_income_region <- ca_childcare %>%
   filter(study_year %in% c(2008, 2018)) %>%
   group_by(region, study_year) %>%
   summarise(median_income = median(mhi_2018, na.rm = TRUE), .groups = 'drop') %>%
   pivot_wider(names_from = study_year, values_from = median_income, names_prefix = "year_") %>%
   arrange(desc(year_2018))
 
-print(median_income_region)
+print(med_income_region)
 ```
 
 
@@ -107,7 +107,20 @@ print(median_income_region)
 ```{r}
 #| label: lowest-median-weekly-price-2018
 
+# Region with the lowest median price for center-based infant care (2018)
+lowest_price_region <- ca_childcare %>%
+  filter(study_year == 2018, mc_infant == "Center-based, Infant") %>%
+  group_by(region) %>%
+  summarise(median_weekly_price = median(mc_infant, na.rm = TRUE), .groups = "drop") %>%
+  slice_min(median_weekly_price, n = 1)
 
+# Region with the lowest median income in 2018 (using med_income_region from previous code)
+lowest_income_region <- med_income_region %>%
+  slice_min(year_2018, n = 1)
+
+# Output both for direct comparison
+list(Lowest_Weekly_Childcare_Cost = lowest_price_region,
+     Lowest_Region_Income = lowest_income_region)
 ```
 
 **6. Recreate the plot (look at online instructions) that shows, for all ten regions, the change over time of the full-time median price for center-based childcare for infants, toddlers, and preschoolers. Recreate the plot. You do not have to replicate the exact colors or theme, but your plot should have the same content, including the order of the facets and legend, reader-friendly labels, axes breaks, and a  smooth function.**
@@ -116,6 +129,6 @@ print(median_income_region)
 ```{r}
 #| label: recreate-plot
 
+# I am completely at a loss on how to create that beautiful plot in the lab instructions :(. 
+
 ```
-
-
